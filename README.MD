@@ -4,7 +4,7 @@ Original creator https://github.com/z175
 
 Improved by https://github.com/TheCruZ
 
-run kdmapper.exe in admin CMD to see it's arguments, in order to not be in BigPoolsTable the argument is --mdl. If you want to free the allocated memory after execution use --free! (please note --mdl and --free can't be combined if you want to free the memory after usage you have to not pass the --mdl argument and use kdmapper it's original way of allocating memory)
+run kdmapper.exe in admin CMD to see it's arguments, in order to not be in BigPoolsTable the argument is --mdl. If you want to free the allocated memory after execution use --free!
 
 If you would like to use a GUI for kdmapper that shows you example entry point refer to https://www.unknowncheats.me/forum/anti-cheat-bypass/465064-kdmapper-gui-modified-version-allocates-pages-mdl.html
 
