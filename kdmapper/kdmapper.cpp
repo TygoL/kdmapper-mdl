@@ -13,6 +13,21 @@ STRUCT_MDL kdmapper::AllocMdlMemory(HANDLE iqvw64e_device_handle, uint64_t size)
 		return { 0 };
 	}
 
+	uint32_t byteCount = 0;
+	if (!intel_driver::ReadMemory(iqvw64e_device_handle, mdl + 0x028 /*_MDL : byteCount*/, &byteCount, sizeof(uint32_t)))
+	{
+		Log(L"[-] Can't read the _MDL : byteCount" << std::endl);
+		return { 0 };
+	}
+
+	if (byteCount < size)
+	{
+		Log(L"[-] Couldn't allocate enough memory cleaning up" << std::endl);
+		intel_driver::MmFreePagesFromMdl(iqvw64e_device_handle, mdl);
+		intel_driver::FreePool(iqvw64e_device_handle, mdl);
+		return { 0 };
+	}
+
 	auto mappingStartAddress = intel_driver::MmMapLockedPagesSpecifyCache(iqvw64e_device_handle, mdl, intel_driver::KernelMode, intel_driver::MmCached, NULL, FALSE, intel_driver::NormalPagePriority);
 	if (!mappingStartAddress) {
 		Log(L"[-] Can't set mdl pages cache" << std::endl);
