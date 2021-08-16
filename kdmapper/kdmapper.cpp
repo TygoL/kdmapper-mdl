@@ -22,7 +22,7 @@ STRUCT_MDL kdmapper::AllocMdlMemory(HANDLE iqvw64e_device_handle, uint64_t size)
 
 	if (byteCount < size)
 	{
-		Log(L"[-] Couldn't allocate enough memory cleaning up" << std::endl);
+		Log(L"[-] Couldn't allocate enough memory, cleaning up" << std::endl);
 		intel_driver::MmFreePagesFromMdl(iqvw64e_device_handle, mdl);
 		intel_driver::FreePool(iqvw64e_device_handle, mdl);
 		return { 0 };
@@ -30,13 +30,19 @@ STRUCT_MDL kdmapper::AllocMdlMemory(HANDLE iqvw64e_device_handle, uint64_t size)
 
 	auto mappingStartAddress = intel_driver::MmMapLockedPagesSpecifyCache(iqvw64e_device_handle, mdl, intel_driver::KernelMode, intel_driver::MmCached, NULL, FALSE, intel_driver::NormalPagePriority);
 	if (!mappingStartAddress) {
-		Log(L"[-] Can't set mdl pages cache" << std::endl);
+		Log(L"[-] Can't set mdl pages cache, cleaning up." << std::endl);
+		Sleep(5000);
+		intel_driver::MmFreePagesFromMdl(iqvw64e_device_handle, mdl);
+		intel_driver::FreePool(iqvw64e_device_handle, mdl);
 		return { 0 };
 	}
 
 	const auto result = intel_driver::MmProtectMdlSystemAddress(iqvw64e_device_handle, mdl, PAGE_EXECUTE_READWRITE);
 	if (!result) {
-		Log(L"[-] Can't change protection for mdl pages" << std::endl);
+		Log(L"[-] Can't change protection for mdl pages, cleaning up" << std::endl);
+		intel_driver::MmUnmapLockedPages(iqvw64e_device_handle, mappingStartAddress, mdl);
+		intel_driver::MmFreePagesFromMdl(iqvw64e_device_handle, mdl);
+		intel_driver::FreePool(iqvw64e_device_handle, mdl);
 		return { 0 };
 	}
 	Log(L"[+] Allocated pages for mdl" << std::endl);
