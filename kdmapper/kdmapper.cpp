@@ -31,7 +31,6 @@ STRUCT_MDL kdmapper::AllocMdlMemory(HANDLE iqvw64e_device_handle, uint64_t size)
 	auto mappingStartAddress = intel_driver::MmMapLockedPagesSpecifyCache(iqvw64e_device_handle, mdl, intel_driver::KernelMode, intel_driver::MmCached, NULL, FALSE, intel_driver::NormalPagePriority);
 	if (!mappingStartAddress) {
 		Log(L"[-] Can't set mdl pages cache, cleaning up." << std::endl);
-		Sleep(5000);
 		intel_driver::MmFreePagesFromMdl(iqvw64e_device_handle, mdl);
 		intel_driver::FreePool(iqvw64e_device_handle, mdl);
 		return { 0 };
