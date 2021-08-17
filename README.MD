@@ -12,6 +12,8 @@ Please note I've taken the code from TheCruz and updated it so that it doesn't a
 
 please note TheCruz had merged my repo and improved the code, I then took this code and added a few more things to it.
 
+**TheCruz has intergrated this into his github repo, I'm most likely not updating this repo so to always have an up-to-date version go to https://github.com/TheCruZ**
+
 Tested from **Windows 10 1607** to current **Windows 11 22000** :heavy_check_mark:
 
 
